@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习three.js</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <script src="./ThreeJs/js/three.js"></script>
+    <script>
+
+        //  常见 ---> 相机 ---> 渲染器
+        //  Scene    Camera   Renderer
+
+
+        // 创建一个场景
+        var scene = new THREE.Scene()
+        // 创建一个网络模型 
+        var geometry = new THREE.BoxGeometry(100, 100, 100)
+        // var geometry = new THREE.SphereGeometry(60, 40, 40)
+        var meterial = new THREE.MeshLambertMaterial({
+            color: 0x0000ff
+        })
+        // 材质对象meterial
+        var mesh = new THREE.Mesh(geometry, meterial)
+        // 网络模型添加到场景中
+        scene.add(mesh)
+
+        /**
+         * 光源设置
+         * 
+        */
+        // 点光源
+        var point = new THREE.PointLight(0x0000ff)
+        point.position.set(400, 200, 300)
+        // 点光源添加到场景中
+        scene.add(point)
+
+        // 环境光
+        var ambient = new THREE.AmbientLight(0x444444)
+        scene.add(ambient)
+
+        var width = window.innerWidth;
+        var height = window.innerHeight;
+        var k = width / height;
+
+        // 三维场景显示范围控制系数， 系数越大，显示的范围越大
+        var s = 300;
+        var camera = new THREE.OrthographicCamera( -s*k, s*k, s, -s, 1, 1000 )
+        // camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+        camera.position.set( 200, 300, 400)
+        // 设置相机方向 (指向的场景对象)
+
+        camera.lookAt(scene.position)
+
+        /**
+         * 创建渲染器对象
+        */
+        var renderer = new THREE.WebGLRenderer()
+        renderer.setSize(width, height)
+        renderer.setClearColor(0xcccccc, 1)
+        document.body.appendChild(renderer.domElement)
+        // renderer.render(scene, camera)
+            
+        function render() {
+            renderer.render(scene, camera)
+            mesh.rotateY(0.01)
+            requestAnimationFrame(render)
+        }
+        render()
+
+
+
+    
+    </script>
+</body>
+</html>
