@@ -1,9 +1,3 @@
-/**
- * Modules.js是3D库区图显示模型存放的地方
- *
- * @author 谢宁, Created on 2018-06-07
- */
-/** ***************************************************************** */
 //模型材质信息
 var planeMat, RackMat, RackMat2, CargoMat, LineMat, RollTexture, RollMat;
 //库区信息
