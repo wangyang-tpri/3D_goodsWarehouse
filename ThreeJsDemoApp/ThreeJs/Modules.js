@@ -129,8 +129,10 @@ function cargo(batchNo, prodBatchNo, inBatchNo,
 
 /** 初始化材质信息 */
 function initMat() {
+    // MeshLambertMaterial() Lambert网络材质,与光照有反应，漫反射
     planeMat = new THREE.MeshLambertMaterial();
     RackMat = new THREE.MeshLambertMaterial();
+    // MeshPhongMaterial() 高光Phong材质,与光照有反应
     RackMat2 = new THREE.MeshPhongMaterial({color:0x1C86EE});
     CargoMat = new THREE.MeshLambertMaterial(); // 材质对象
     LineMat = new THREE.MeshLambertMaterial();
@@ -219,8 +221,6 @@ function addVideoPlane( x,y,z,width,length,scene,videoId ) {
   mesh.position.set(x,y,z);
   scene.add(mesh);
 }
-//endregion
-
 //region 矩形区域
 function addPlane(x,z,width,length,scene) {
     var lineWidth = 8
@@ -247,8 +247,6 @@ function addPlane(x,z,width,length,scene) {
     group.translateX(-width/2);
     scene.add( group );
 }
-//endregion
-
 //region 库区
 /** 放置虚线框区域和库区名称 */
 function addArea(x,z,width,length,scene,name,textColor,font_size,textposition) {
@@ -308,6 +306,7 @@ function addRack(x,y,z,plane_x,plane_y,plane_z,holder_x,holder_y,holder_z,scene,
             msg.split("$")[3],
             msg.split("$")[4],
             x, y, gz[i], storageUnitId);
+        // 将货架上面的每个货物的具体信息存储到storageUnitList()数组中
         storageUnitList.push(storageUnit_obj);
         storageUnitSize++;
 
@@ -329,7 +328,6 @@ function addRack(x,y,z,plane_x,plane_y,plane_z,holder_x,holder_y,holder_z,scene,
     scene.add(obj2);scene.add(obj3);scene.add(obj4);scene.add(obj5);
 }
 
-/** 放置一叠货架 */
 /** stack_num 货架的叠数 */
 
 /**
@@ -387,10 +385,7 @@ function addShelf(scene) {
 //region 货物
 /** 放置单个货物 */
 function addCargo(x,y,z,box_x,box_y,box_z,scene,name, spectific) {
-    // 创建一个立方体样子的盒子
     var geometry = new THREE.BoxGeometry( box_x, box_y, box_z );
-    // 改变颜色
-
     var obj = new THREE.Mesh( geometry, CargoMat ); // mesh就是网络模型对象 
     obj.position.set(x,y,z);
     obj.name = name;
@@ -404,7 +399,7 @@ function addCargo2(x, y, z, box_x, box_y, box_z, scene, name) {
         cargoMat2.map = map;
         cargoMat2.needsUpdate = true
     })
-    var obj2 = new THREE.Mesh( geometry, cargoMat2 ); // mesh就是网络模型对象 
+    var obj2 = new THREE.Mesh( geometry, cargoMat2 );
     obj2.setColor = function(color) {
         obj2.material.color = new THREE.Color(color)
     }
@@ -413,7 +408,14 @@ function addCargo2(x, y, z, box_x, box_y, box_z, scene, name) {
     obj2.name = name;
     scene.add(obj2);  
 }
-/** 添加单个货位上的货物 */
+/**
+ *  添加单个货位上的货物 
+ * @param { string } shelfId 货架的id
+ * @param { number } inLayerNum 货架的层数
+ * @param { number } inColumnNum 货架每层的列数
+ * @param { object } scene  three.js的场景
+ * 
+*/
 function addOneUnitCargos(shelfId,inLayerNum,inColumnNum,scene) {
     var storageUnit = getStorageUnitById(shelfId,inLayerNum,inColumnNum);
     var shelf = getShelfById(storageUnit.shelfId);
