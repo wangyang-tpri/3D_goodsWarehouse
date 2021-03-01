@@ -44,17 +44,12 @@
   <script src="./ThreeJs/Modules.js" charset="UTF-8"></script>
   <script src="./ThreeJs/js/Tween.js"></script>
   <script src="./ThreeJs/js/jquery-1.11.0.min.js"></script>
-  <script src="./echarts/echarts.min.js"></script>
   <script src="./ThreeJs/config.js"></script>
 </head>
 
 <body>
   <div id="label"></div>
   <div id="container"></div>
-  <video id="video" autoplay loop muted>
-    <source src="./video/videoPlane.mp4">
-  </video>
-
   <script>
 
     var stats = initStats();
@@ -109,18 +104,17 @@
     // 就是页面右上角的控制输入的组件
     function initGui() {
       options = new function () {
-        this.batchNo = ''; this.qty = 0; this.qtyUom = ''; this.qty2 = 0;
-        this.实时全景监控 = function () {
-          window.open("3DVideo.html");
-        };
+        this.batchNo = ''; this.qty = ''; this.qtyUom = '';
+        this.查询 = function(){
+          addSpecificWare(this.batchNo + '', this.qty, this.qtyUom, scene)
+        }
       };
       var gui = new dat.GUI();
       gui.domElement.style = 'position:absolute;top:10px;right:0px;height:600px';
-      gui.add(options, 'batchNo').name("物料批号：").listen();
-      gui.add(options, 'qty').name("数量：").listen();
-      gui.add(options, 'qtyUom').name("单位：").listen();
-      gui.add(options, 'qty2').name("件数：").listen();
-      gui.add(options, '实时全景监控');
+      gui.add(options, 'batchNo').name("货架号：").listen();
+      gui.add(options, 'qty').name("那一层：").listen();
+      gui.add(options, 'qtyUom').name("那一列：").listen();
+      gui.add(options, '查询');
     }
 
     // 初始化渲染器
@@ -343,7 +337,7 @@
       initContent();
       initLight();
       initControls();
-      // initGui();
+      initGui();
 
       addArea(0, 0, 1000, 500, scene, "ID1$库区1号", "FF0000", 20, "左对齐");
 
