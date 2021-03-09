@@ -52,7 +52,7 @@
   <div id="container"></div>
   <script>
 
-    var stats = initStats();
+    // var stats = initStats();
     var scene, camera, renderer, controls, light, composer, transformControls, options;
     var specificWares = true;
     var matArrayA = []; //内墙
@@ -96,7 +96,7 @@
       stats.domElement.style.left = '0px';
       stats.domElement.style.top = '0px';
 
-      document.body.appendChild(stats.domElement);
+      // document.body.appendChild(stats.domElement);
       return stats;
     }
 
@@ -279,11 +279,12 @@
 
     // 初始化模型
     function initContent() {
-      // createFloor();
+      createFloor();
       createWallMaterail();
       createCubeWall(10, 200, 1400, 0, matArrayB, -1295, 100, 0, "墙面");
       createCubeWall(10, 200, 1400, 1, matArrayB, 1295, 100, 0, "墙面");
       createCubeWall(10, 200, 2600, 1.5, matArrayB, 0, 100, -700, "墙面");
+      createCubeWall(10, 200, 2600, 4.5, matArrayB, 0, 100, 700, "墙面");
       //创建挖了门的墙
       var wall = returnWallObject(2600, 200, 10, 0, matArrayB, 0, 100, 700, "墙面");
       var door_cube1 = returnWallObject(200, 180, 10, 0, matArrayB, -600, 90, 700, "前门1");
@@ -299,17 +300,17 @@
       objects_cube.push(window_cube2);
       objects_cube.push(window_cube3);
       objects_cube.push(window_cube4);
-      createResultBsp(wall, objects_cube);
+      // createResultBsp(wall, objects_cube);
       //为墙面安装门
-      // createDoor_left(100, 180, 2, 0, -700, 90, 700, "左门1");
-      // createDoor_right(100, 180, 2, 0, -500, 90, 700, "右门1");
-      // createDoor_left(100, 180, 2, 0, 500, 90, 700, "左门2");
-      // createDoor_right(100, 180, 2, 0, 700, 90, 700, "右门2");
+      createDoor_left(100, 180, 2, 0, -700, 90, 700, "左门1");
+      createDoor_right(100, 180, 2, 0, -500, 90, 700, "右门1");
+      createDoor_left(100, 180, 2, 0, 500, 90, 700, "左门2");
+      createDoor_right(100, 180, 2, 0, 700, 90, 700, "右门2");
       // //为墙面安装窗户
-      // createWindow(100, 100, 2, 0, -900, 90, 700, "窗户");
-      // createWindow(100, 100, 2, 0, 900, 90, 700, "窗户");
-      // createWindow(100, 100, 2, 0, -200, 90, 700, "窗户");
-      // createWindow(100, 100, 2, 0, 200, 90, 700, "窗户");
+      createWindow(100, 100, 2, 0, -900, 90, 700, "窗户");
+      createWindow(100, 100, 2, 0, 900, 90, 700, "窗户");
+      createWindow(100, 100, 2, 0, -200, 90, 700, "窗户");
+      createWindow(100, 100, 2, 0, 200, 90, 700, "窗户");
     }
 
     // 初始化轨迹球控件
@@ -342,7 +343,6 @@
       addArea(0, 0, 1000, 500, scene, "ID1$库区1号", "FF0000", 20, "左对齐");
 
       addShelf(scene);
-
       //添加货物
       // 将shelf_list中的货物信息通过循环添加到货柜上，然后将货柜添加到场景中
       // GET_SHELF_LIST() 货架数
@@ -356,7 +356,8 @@
           }
         }
       }
-      addSpecificWare('A2', 2, 3, scene)
+      var paramsResult = getUrlParams(location.search);
+      paramsResult && addSpecificWare(paramsResult.shelfName, paramsResult.layerNum, paramsResult.columnNum, scene)
       //添加选中时的蒙版
       composer = new THREE.ThreeJs_Composer(renderer, scene, camera, options);
 
@@ -401,12 +402,31 @@
 
     // 更新控件
     function update() {
-      stats.update();
+      // stats.update();
       controls.update();
       TWEEN.update();
       RollTexture.offset.x += 0.001;
     }
-
+    /**
+     * 获取url中的search参数
+     * ?shelfName=A1&layerNum=3&columnNum=2
+     * @params {string} searchStr
+     * @return {object} result
+    */
+    function getUrlParams(searchStr){
+      var searchSplitArr = [], paramsArr = [];
+      var result = {}, i = 0;
+      if (searchStr) {
+        searchSplitArr = searchStr.split('?')[1].split('&');
+        for ( ; i < searchSplitArr.length; i++ ){
+          paramsArr = searchSplitArr[i].split('=');
+          result[paramsArr[0]] = paramsArr[1]
+        }
+        return result;
+      } else {
+        return '';
+      }
+    }
     init();
     animate();
   </script>
