@@ -15,71 +15,95 @@
 <body>
 
     <script src="./ThreeJs/js/three.js"></script>
+    <script src="./ThreeJs/js/dat.gui.min.js"></script>
     <script>
 
         //  常见 ---> 相机 ---> 渲染器
         //  Scene    Camera   Renderer
-
-
+        var scene, camera, light, renderer, ambient;
+        // 物体的材质 形状 纹理
+        var meterial, geometry, mesh;
+        // 应用的宽 高
+        var width, height;
         // 创建一个场景
-        var scene = new THREE.Scene()
-        // 创建一个网络模型 
-        var geometry = new THREE.BoxGeometry(100, 100, 100)
-        // var geometry = new THREE.SphereGeometry(60, 40, 40)
-        var meterial = new THREE.MeshLambertMaterial({
-            color: 0x0000ff
-        })
-        // 材质对象meterial
-        var mesh = new THREE.Mesh(geometry, meterial)
-        // 网络模型添加到场景中
-        scene.add(mesh)
+        var initConstruc = function(){
+            scene = new THREE.Scene()
+            light = new THREE.PointLight(0x0000ff)
+            renderer = new THREE.WebGLRenderer()
+        }       
+        // 创建一个网络模型
+        function createMeshObj (){
+            geometry = new THREE.BoxGeometry(100, 100, 100)
+            meterial = new THREE.MeshLambertMaterial({
+                color: 0x0000ff
+            })
+            mesh = new THREE.Mesh(geometry, meterial)
+            // 网络模型添加到场景中
+            scene.add(mesh)
+            light.position.set(400, 200, 300)
+            // 点光源添加到场景中
+            scene.add(light)
 
-        /**
-         * 光源设置
-         * 
-        */
-        // 点光源
-        var point = new THREE.PointLight(0x0000ff)
-        point.position.set(400, 200, 300)
-        // 点光源添加到场景中
-        scene.add(point)
+            // 环境光
+            ambient = new THREE.AmbientLight(0x444444)
+            scene.add(ambient)
+        } 
+        function initCamera(){
+            width = window.innerWidth;
+            height = window.innerHeight;
+            var k = width / height;
 
-        // 环境光
-        var ambient = new THREE.AmbientLight(0x444444)
-        scene.add(ambient)
+            // 三维场景显示范围控制系数， 系数越大，显示的范围越大
+            var s = 300;
+            camera = new THREE.OrthographicCamera( -s*k, s*k, s, -s, 1, 1000 )
+            // camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+            camera.position.set( 200, 300, 400)
+            // 设置相机方向 (指向的场景对象)
 
-        var width = window.innerWidth;
-        var height = window.innerHeight;
-        var k = width / height;
-
-        // 三维场景显示范围控制系数， 系数越大，显示的范围越大
-        var s = 300;
-        var camera = new THREE.OrthographicCamera( -s*k, s*k, s, -s, 1, 1000 )
-        // camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
-        camera.position.set( 200, 300, 400)
-        // 设置相机方向 (指向的场景对象)
-
-        camera.lookAt(scene.position)
-
+            camera.lookAt(scene.position)
+        }
+        
+        // 创建gui组件 GUI是一个轻量级的图形用户界面库
+        function initGui(){
+            var gui = {
+                boxW: '',
+                '放大': function(){
+                    geometry = new THREE.BoxGeometry(this.boxW, 100, 100)
+                    mesh = new THREE.Mesh(geometry, meterial)
+                }
+            }
+            var datGui = new dat.GUI()
+            datGui.add(gui, 'boxW').name('元素的宽度').listen()
+            datGui.add(gui, '放大')
+        }
         /**
          * 创建渲染器对象
         */
-        var renderer = new THREE.WebGLRenderer()
-        renderer.setSize(width, height)
-        renderer.setClearColor(0xcccccc, 1)
-        document.body.appendChild(renderer.domElement)
-        // renderer.render(scene, camera)
-            
+       function initRend(){
+            renderer.setSize(width, height)
+            renderer.setClearColor(0xcccccc, 1)
+            document.body.appendChild(renderer.domElement) 
+            render()
+       }
         function render() {
             renderer.render(scene, camera)
-            mesh.rotateY(0.01)
+            mesh.rotateZ(0.01)
             requestAnimationFrame(render)
         }
-        render()
-
-
-
-    
+        function onWindowResize(){
+            camera.aspect = window.innerWidth / window.innerHeight
+            camera.updateProjectionMatrix()
+            renderer.setSize(window.innerWidth, window.innerHeight)
+        }
+        function init(){
+            initConstruc()
+            createMeshObj()
+            initCamera()
+            initRend()     
+            initGui();
+            window.addEventListener('resize', onWindowResize, false)            
+        }
+        window.onload = init()
     </script>
 </body>
 </html>
