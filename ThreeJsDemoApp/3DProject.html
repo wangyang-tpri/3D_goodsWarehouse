@@ -67,7 +67,7 @@
     // 初始化相机
     function initCamera() {
       //    THREE.PerspectiveCamera()   可视角度   实际窗口的纵横比             近处的裁面距离 远处的裁面距离
-      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 10000);
+      camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.05, 10000);
       //                  x, y, z
       //  控制从眼睛主观观察的角度 z轴控制距离
       camera.position.set(10, 15, 600);
@@ -106,7 +106,7 @@
       options = new function () {
         this.batchNo = ''; this.qty = ''; this.qtyUom = '';
         this.查询 = function(){
-          addSpecificWare(this.batchNo + '', this.qty, this.qtyUom, scene)
+          // addSpecificWare(this.batchNo + '', this.qty, this.qtyUom, scene)
         }
       };
       var gui = new dat.GUI();
@@ -338,7 +338,7 @@
       initContent();
       initLight();
       initControls();
-      initGui();
+      // initGui();
 
       addArea(0, 0, 1000, 500, scene, "ID1$库区1号", "FF0000", 20, "左对齐");
 
@@ -356,8 +356,8 @@
           }
         }
       }
-      var paramsResult = getUrlParams(location.search);
-      paramsResult && addSpecificWare(paramsResult.shelfName, paramsResult.layerNum, paramsResult.columnNum, scene)
+      // var paramsResult = getUrlParams(location.search);
+      // paramsResult && addSpecificWare(paramsResult.shelfName, paramsResult.layerNum, paramsResult.columnNum, scene)
       //添加选中时的蒙版
       composer = new THREE.ThreeJs_Composer(renderer, scene, camera, options);
 

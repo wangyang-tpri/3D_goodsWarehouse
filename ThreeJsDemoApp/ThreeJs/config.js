@@ -16,11 +16,11 @@ var BOX_SIZE = 16;      //货物的大小(立方体)
 
 //货架数组
 var shelf_list = new Array();
-shelf_list.push({StorageZoneId:'Z1',shelfId:'A1',shelfName:'货架A1',x:-200,y:27,z:-50});
-shelf_list.push({StorageZoneId:'Z1',shelfId:'A2',shelfName:'货架A2',x:-100,y:27,z:-50});
-shelf_list.push({StorageZoneId:'Z1',shelfId:'A3',shelfName:'货架A3',x:0,y:27,z:-50});
-shelf_list.push({StorageZoneId:'Z1',shelfId:'A4',shelfName:'货架A4',x:100,y:27,z:-50});
-shelf_list.push({StorageZoneId:'Z1',shelfId:'A5',shelfName:'货架A5',x:200,y:27,z:-50});
+shelf_list.push({StorageZoneId:'Z1',shelfId:'A1',shelfName:'货架A1',x:-60,y:27,z:-50});
+shelf_list.push({StorageZoneId:'Z1',shelfId:'A2',shelfName:'货架A2',x:-10,y:27,z:-50});
+shelf_list.push({StorageZoneId:'Z1',shelfId:'A3',shelfName:'货架A3',x:40,y:27,z:-50});
+shelf_list.push({StorageZoneId:'Z1',shelfId:'A4',shelfName:'货架A4',x:90,y:27,z:-50});
+shelf_list.push({StorageZoneId:'Z1',shelfId:'A5',shelfName:'货架A5',x:140,y:27,z:-50});
 // shelf_list.push({StorageZoneId:'Z1',shelfId:'A6',shelfName:'货架A6',x:400,y:27,z:0});
 
 function GET_PLANE_LENGTH(){
