@@ -340,7 +340,7 @@
       initControls();
       // initGui();
 
-      addArea(0, 0, 1000, 500, scene, "ID1$库区1号", "FF0000", 20, "左对齐");
+      addArea(0, 0, 1000, 500, scene, "ID1_库区1号", "FF0000", 20, "左对齐");
 
       addShelf(scene);
       //添加货物
@@ -365,7 +365,7 @@
       // 过滤不是 Mesh 的物体,例如辅助网格
       var objects = [];
       for (var i = 0; i < scene.children.length; i++) {
-        var Msg = scene.children[i].name.split("$");
+        var Msg = scene.children[i].name.split("_");
         if (scene.children[i].isMesh && Msg[0] == "货物") {
           objects.push(scene.children[i]);
         }

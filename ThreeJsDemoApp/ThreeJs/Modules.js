@@ -193,7 +193,7 @@ function addSkybox( size,scene ) {
             side : THREE.BackSide
         })
     );
-    scene.add( obj );
+    // scene.add( obj );
 }
 //endregion
 
@@ -294,24 +294,25 @@ function addRack(x,y,z,plane_x,plane_y,plane_z,holder_x,holder_y,holder_z,scene,
     for(var i = 0; i < num; i++){
         gz.push( z + plane_z/num/2 + (plane_z/num)*i );
         var obj = new THREE.Mesh( plane, RackMat );
+        obj.material.color = new THREE.Color('green')
         obj.position.set(x , y, gz[i]) ;
-        var msg = name+"$"+(GET_COLUMN_NUM() - i);
+        var msg = name+"_"+(GET_COLUMN_NUM() - i);
 
-        var storageUnitId = msg.split("$")[1] + "$" + msg.split("$")[3] + "$" + msg.split("$")[4];
+        var storageUnitId = msg.split("_")[1] + "_" + msg.split("_")[3] + "_" + msg.split("_")[4];
 
         //添加货位
-        var storageUnit_obj = new storageUnit(msg.split("$")[0],
-            msg.split("$")[1],
-            msg.split("$")[2],
-            msg.split("$")[3],
-            msg.split("$")[4],
+        var storageUnit_obj = new storageUnit(msg.split("_")[0],
+            msg.split("_")[1],
+            msg.split("_")[2],
+            msg.split("_")[3],
+            msg.split("_")[4],
             x, y, gz[i], storageUnitId);
         // 将货架上面的每个货物的具体信息存储到storageUnitList()数组中
         storageUnitList.push(storageUnit_obj);
         storageUnitSize++;
 
-        var Unit = getStorageUnitById(msg.split("$")[1],msg.split("$")[3],msg.split("$")[4]);
-        obj.name = "货位"+"$"+Unit.storageUnitId;
+        var Unit = getStorageUnitById(msg.split("_")[1],msg.split("_")[3],msg.split("_")[4]);
+        obj.name = "货位"+"_"+Unit.storageUnitId;
         scene.add(obj);
     }
 
@@ -349,7 +350,7 @@ function addRack(x,y,z,plane_x,plane_y,plane_z,holder_x,holder_y,holder_z,scene,
  */
 function addStackOfRack(x,y,z,plane_x,plane_y,plane_z,holder_x,holder_y,holder_z,scene,name,num,stack_num) {
     for(var i = 0; i < stack_num; i++){
-        addRack(x,y*(i+1),z,plane_x,plane_y,plane_z,holder_x,holder_y,holder_z,scene,name+"$"+(i+1),num);
+        addRack(x,y*(i+1),z,plane_x,plane_y,plane_z,holder_x,holder_y,holder_z,scene,name+"_"+(i+1),num);
     }
 }
 
@@ -378,7 +379,7 @@ function addShelf(scene) {
     }
 
     for(var i = 0;i < shelfSize; i++){
-        addStackOfRack(shelfList[i].positionX,shelfList[i].positionY,shelfList[i].positionZ,shelfList[i].planeLength,shelfList[i].planeHeight,shelfList[i].planeWidth,shelfList[i].holderLength,shelfList[i].holderHeight,shelfList[i].holderWidth,scene,shelfList[i].storageZoneId+"$"+shelfList[i].shelfId+"$"+shelfList[i].shelfName,shelfList[i].columnNum,shelfList[i].layerNum);
+        addStackOfRack(shelfList[i].positionX,shelfList[i].positionY,shelfList[i].positionZ,shelfList[i].planeLength,shelfList[i].planeHeight,shelfList[i].planeWidth,shelfList[i].holderLength,shelfList[i].holderHeight,shelfList[i].holderWidth,scene,shelfList[i].storageZoneId+"_"+shelfList[i].shelfId+"_"+shelfList[i].shelfName,shelfList[i].columnNum,shelfList[i].layerNum);
     }
 }
 
@@ -423,7 +424,7 @@ function addOneUnitCargos(shelfId,inLayerNum,inColumnNum,scene) {
     var x = storageUnit.positionX;
     var y = storageUnit.positionY + GET_BOX_SIZE()/2 + shelf.planeHeight/2;
     var z = storageUnit.positionZ;
-    addCargo(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,"货物"+"$"+storageUnitid)
+    addCargo(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,"货物"+"_"+storageUnitid)
 }
 
 /**
