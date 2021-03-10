@@ -68,8 +68,10 @@
             var gui = {
                 boxW: '',
                 '放大': function(){
+                    scene.remove(mesh)
                     geometry = new THREE.BoxGeometry(this.boxW, 100, 100)
                     mesh = new THREE.Mesh(geometry, meterial)
+                    scene.add(mesh)
                 }
             }
             var datGui = new dat.GUI()
