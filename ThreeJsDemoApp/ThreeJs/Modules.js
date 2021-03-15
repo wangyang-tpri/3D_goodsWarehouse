@@ -407,8 +407,8 @@ function addCargo2(x, y, z, box_x, box_y, box_z, scene, name) {
     var r = 0, g = 0.1;
     obj2.setColor(r, g)
     setInterval(function(){
-        r += 0.1 ;
-        g += 0.1;
+        r += 0.3 ;
+        g += 0.3;
         r = r > 0.8 ? 0.1 : r;
         g = g > 2 ? 0.1 : g;
         obj2.setColor(r, g )

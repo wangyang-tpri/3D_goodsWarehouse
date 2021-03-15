@@ -66,11 +66,17 @@
 
     // 初始化相机
     function initCamera() {
+      var visualAngle;
+      if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)){
+        visualAngle = 45;
+      } else {
+        visualAngle = 15;
+      }
       //    THREE.PerspectiveCamera()   可视角度   实际窗口的纵横比             近处的裁面距离 远处的裁面距离
-      camera = new THREE.PerspectiveCamera(15, window.innerWidth / window.innerHeight, 0.05, 10000);
+      camera = new THREE.PerspectiveCamera(visualAngle, window.innerWidth / window.innerHeight, 0.05, 10000);
       //                  x, y, z
       //  控制从眼睛主观观察的角度 z轴控制距离
-      camera.position.set(10, 15, 600);
+      camera.position.set(-80, 200, 600);
     }
 
     // 初始化灯光
