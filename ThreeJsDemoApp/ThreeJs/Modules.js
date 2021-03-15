@@ -401,11 +401,27 @@ function addCargo2(x, y, z, box_x, box_y, box_z, scene, name) {
         cargoMat2.needsUpdate = true
     })
     var obj2 = new THREE.Mesh( geometry, cargoMat2 );
-    obj2.setColor = function(color) {
-        obj2.material.color = new THREE.Color(color)
+    obj2.setColor = function(r, g) {
+        obj2.material.color = new THREE.Color().setRGB(255, r, g )
     }
-    obj2.setColor('red')        
+    var r = 0, g = 0.1;
+    obj2.setColor(r, g)
+    setInterval(function(){
+        r += 0.1 ;
+        g += 0.1;
+        r = r > 0.8 ? 0.1 : r;
+        g = g > 2 ? 0.1 : g;
+        obj2.setColor(r, g )
+    }, 500)
     obj2.position.set(x,y,z);
+    for ( var i = 0; i < scene.children.length; i++) {
+        var msg = scene.children[i].name.split('_');
+        var msg2 = name.split('_');
+        if (msg[1] == msg2[1] && msg[2] == msg2[2] && msg[3] == msg2[3]){
+            scene.children[i].name = name;
+        }
+        
+    }
     obj2.name = name;
     scene.add(obj2);  
 }
@@ -431,13 +447,15 @@ function addOneUnitCargos(shelfId,inLayerNum,inColumnNum,scene) {
  * 指定特定的货架上面的货柜的商品的颜色
 */
 
-function addSpecificWare(shelfId, inLayerNum, inColumnNum, scene){
+function addSpecificWare(shelfId, inLayerNum, inColumnNum, name, scene){
     var storageUnit = getStorageUnitById(shelfId,inLayerNum,inColumnNum);
     var shelf = getShelfById(storageUnit.shelfId);
     var storageUnitid = storageUnit.storageUnitId;
     var x = storageUnit.positionX;
     var y = storageUnit.positionY + GET_BOX_SIZE()/2 + shelf.planeHeight/2;
     var z = storageUnit.positionZ;
-    addCargo2(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,"货物"+"$"+storageUnitid)
+    var cargoName;
+    cargoName = name ? decodeURI(name) : '货物'
+    addCargo2(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,cargoName+"_"+storageUnitid)
 }
 //endregion

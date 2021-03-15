@@ -284,33 +284,33 @@
       createCubeWall(10, 200, 1400, 0, matArrayB, -1295, 100, 0, "墙面");
       createCubeWall(10, 200, 1400, 1, matArrayB, 1295, 100, 0, "墙面");
       createCubeWall(10, 200, 2600, 1.5, matArrayB, 0, 100, -700, "墙面");
-      createCubeWall(10, 200, 2600, 4.5, matArrayB, 0, 100, 700, "墙面");
+      // createCubeWall(10, 200, 2600, 4.5, matArrayB, 0, 100, 700, "墙面");
       //创建挖了门的墙
-      var wall = returnWallObject(2600, 200, 10, 0, matArrayB, 0, 100, 700, "墙面");
-      var door_cube1 = returnWallObject(200, 180, 10, 0, matArrayB, -600, 90, 700, "前门1");
-      var door_cube2 = returnWallObject(200, 180, 10, 0, matArrayB, 600, 90, 700, "前门2");
-      var window_cube1 = returnWallObject(100, 100, 10, 0, matArrayB, -900, 90, 700, "窗户1");
-      var window_cube2 = returnWallObject(100, 100, 10, 0, matArrayB, 900, 90, 700, "窗户2");
-      var window_cube3 = returnWallObject(100, 100, 10, 0, matArrayB, -200, 90, 700, "窗户3");
-      var window_cube4 = returnWallObject(100, 100, 10, 0, matArrayB, 200, 90, 700, "窗户4");
-      var objects_cube = [];
-      objects_cube.push(door_cube1);
-      objects_cube.push(door_cube2);
-      objects_cube.push(window_cube1);
-      objects_cube.push(window_cube2);
-      objects_cube.push(window_cube3);
-      objects_cube.push(window_cube4);
-      // createResultBsp(wall, objects_cube);
-      //为墙面安装门
-      createDoor_left(100, 180, 2, 0, -700, 90, 700, "左门1");
-      createDoor_right(100, 180, 2, 0, -500, 90, 700, "右门1");
-      createDoor_left(100, 180, 2, 0, 500, 90, 700, "左门2");
-      createDoor_right(100, 180, 2, 0, 700, 90, 700, "右门2");
-      // //为墙面安装窗户
-      createWindow(100, 100, 2, 0, -900, 90, 700, "窗户");
-      createWindow(100, 100, 2, 0, 900, 90, 700, "窗户");
-      createWindow(100, 100, 2, 0, -200, 90, 700, "窗户");
-      createWindow(100, 100, 2, 0, 200, 90, 700, "窗户");
+      // var wall = returnWallObject(2600, 200, 10, 0, matArrayB, 0, 100, 700, "墙面");
+      // var door_cube1 = returnWallObject(200, 180, 10, 0, matArrayB, -600, 90, 700, "前门1");
+      // var door_cube2 = returnWallObject(200, 180, 10, 0, matArrayB, 600, 90, 700, "前门2");
+      // var window_cube1 = returnWallObject(100, 100, 10, 0, matArrayB, -900, 90, 700, "窗户1");
+      // var window_cube2 = returnWallObject(100, 100, 10, 0, matArrayB, 900, 90, 700, "窗户2");
+      // var window_cube3 = returnWallObject(100, 100, 10, 0, matArrayB, -200, 90, 700, "窗户3");
+      // var window_cube4 = returnWallObject(100, 100, 10, 0, matArrayB, 200, 90, 700, "窗户4");
+      // var objects_cube = [];
+      // objects_cube.push(door_cube1);
+      // objects_cube.push(door_cube2);
+      // objects_cube.push(window_cube1);
+      // objects_cube.push(window_cube2);
+      // objects_cube.push(window_cube3);
+      // objects_cube.push(window_cube4);
+      // // createResultBsp(wall, objects_cube);
+      // //为墙面安装门
+      // createDoor_left(100, 180, 2, 0, -700, 90, 700, "左门1");
+      // createDoor_right(100, 180, 2, 0, -500, 90, 700, "右门1");
+      // createDoor_left(100, 180, 2, 0, 500, 90, 700, "左门2");
+      // createDoor_right(100, 180, 2, 0, 700, 90, 700, "右门2");
+      // // //为墙面安装窗户
+      // createWindow(100, 100, 2, 0, -900, 90, 700, "窗户");
+      // createWindow(100, 100, 2, 0, 900, 90, 700, "窗户");
+      // createWindow(100, 100, 2, 0, -200, 90, 700, "窗户");
+      // createWindow(100, 100, 2, 0, 200, 90, 700, "窗户");
     }
 
     // 初始化轨迹球控件
@@ -323,7 +323,7 @@
       // 视角最远距离
       controls.maxDistance = 1000;
       // 最大角度
-      controls.maxPolarAngle = Math.PI / 2.2;
+      controls.maxPolarAngle = Math.PI / 2.1;
       controls.target = new THREE.Vector3(50, 50, 0);
     }
 
@@ -356,8 +356,8 @@
           }
         }
       }
-      // var paramsResult = getUrlParams(location.search);
-      // paramsResult && addSpecificWare(paramsResult.shelfName, paramsResult.layerNum, paramsResult.columnNum, scene)
+      var paramsResult = getUrlParams(location.search);
+      paramsResult && addSpecificWare(paramsResult.shelfName, paramsResult.layerNum, paramsResult.columnNum, paramsResult.cargoName, scene )
       //添加选中时的蒙版
       composer = new THREE.ThreeJs_Composer(renderer, scene, camera, options);
 
