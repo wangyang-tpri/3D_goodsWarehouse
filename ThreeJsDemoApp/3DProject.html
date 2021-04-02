@@ -48,12 +48,13 @@
 </head>
 
 <body>
-  <div id="label"></div>
+  <!-- <div id="label"></div> -->
   <div id="container"></div>
   <script>
 
     // var stats = initStats();
     var scene, camera, renderer, controls, light, composer, transformControls, options;
+    var visualAngle, isMobile = false;
     var specificWares = true;
     var matArrayA = []; //内墙
     var matArrayB = []; //外墙
@@ -63,15 +64,18 @@
     function initScene() {
       scene = new THREE.Scene();
     }
-
-    // 初始化相机
-    function initCamera() {
-      var visualAngle;
+    function isPc(){
       if (/(iPhone|iPad|iPod|iOS|Android)/i.test(navigator.userAgent)){
         visualAngle = 45;
+        isMobile = true
       } else {
         visualAngle = 15;
+        isMobile= false
       }
+    }
+    // 初始化相机
+    function initCamera() {
+      
       //    THREE.PerspectiveCamera()   可视角度   实际窗口的纵横比             近处的裁面距离 远处的裁面距离
       camera = new THREE.PerspectiveCamera(visualAngle, window.innerWidth / window.innerHeight, 0.05, 10000);
       //                  x, y, z
@@ -335,6 +339,7 @@
 
     // 初始化
     function init() {
+      isPc()
       initMat();
       initScene();
       addSkybox(10000, scene);
@@ -376,8 +381,12 @@
           objects.push(scene.children[i]);
         }
       }
-
-      var dragControls = new THREE.DragControls(objects, camera, renderer.domElement);
+      // pc端货架上面的货物可以拖动 移动端的话货物不可以拖动
+      !isMobile && dragEle(objects, camera, renderer.domElement)     
+      window.addEventListener('resize', onWindowResize, false);
+    }
+    function dragEle (objects, camera, domElement){
+      var dragControls = new THREE.DragControls(objects, camera,domElement);
       dragControls.addEventListener('dragstart', function (event) {
         controls.enabled = false;
         isPaused = true;
@@ -387,7 +396,6 @@
         isPaused = false;
       });
 
-      window.addEventListener('resize', onWindowResize, false);
     }
     // 透视投影(从视点开始越近的物体越大,远处的物体绘制的较小的一种) 和 正交投影(物体的大小是固定的)
     // 窗口变动触发的方法
