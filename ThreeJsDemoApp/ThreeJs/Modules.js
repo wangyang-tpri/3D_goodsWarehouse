@@ -457,5 +457,20 @@ function addSpecificWare(shelfId, inLayerNum, inColumnNum, name, scene){
     var cargoName;
     cargoName = name ? decodeURI(name) : '货物'
     addCargo2(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,cargoName+"_"+storageUnitid)
+    specilLayerColor(storageUnit, scene)
+
 }
-//endregion
+/**
+ * @description 将指定的货物的当前层数展示成红色
+ * @param {object} unit  货物的具体位置信息
+ * @param {object} scene three.js的场景 
+ */
+
+function specilLayerColor( unit, scene){
+    var layRack = new THREE.MeshLambertMaterial()
+    var layPlane = new THREE.BoxGeometry(20, 3, 200)
+    var obj = new THREE.Mesh( layPlane, layRack )
+    obj.material.color = new THREE.Color('red')
+    obj.position.set(unit.positionX, unit.positionY, 50)
+    scene.add(obj)
+}
