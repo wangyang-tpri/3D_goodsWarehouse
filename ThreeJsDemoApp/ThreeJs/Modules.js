@@ -392,7 +392,7 @@ function addCargo(x,y,z,box_x,box_y,box_z,scene,name, spectific) {
     obj.name = name;
     scene.add(obj);  // 将网络模型对象添加到场景中
 }
-function addCargo2(x, y, z, box_x, box_y, box_z, scene, name) {
+function addCargo2(x, y, z, box_x, box_y, box_z, scene, name, camera, renderer) {
     var geometry = new THREE.BoxGeometry( box_x, box_y, box_z );
     // 改变颜色
     var cargoMat2 = new THREE.MeshLambertMaterial()
@@ -422,8 +422,8 @@ function addCargo2(x, y, z, box_x, box_y, box_z, scene, name) {
         }
         
     }
-    obj2.name = name;
-    scene.add(obj2);  
+    scene.add(obj2);
+    !isMobile && dragEle([obj2], camera, renderer.domElement)  
 }
 /**
  *  添加单个货位上的货物 
@@ -447,7 +447,7 @@ function addOneUnitCargos(shelfId,inLayerNum,inColumnNum,scene) {
  * 指定特定的货架上面的货柜的商品的颜色
 */
 
-function addSpecificWare(shelfId, inLayerNum, inColumnNum, name, scene){
+function addSpecificWare(shelfId, inLayerNum, inColumnNum, name, scene, camera, renderer){
     var storageUnit = getStorageUnitById(shelfId,inLayerNum,inColumnNum);
     var shelf = getShelfById(storageUnit.shelfId);
     var storageUnitid = storageUnit.storageUnitId;
@@ -456,7 +456,7 @@ function addSpecificWare(shelfId, inLayerNum, inColumnNum, name, scene){
     var z = storageUnit.positionZ;
     var cargoName;
     cargoName = name ? decodeURI(name) : '货物'
-    addCargo2(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,cargoName+"_"+storageUnitid)
+    addCargo2(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,cargoName+"_"+storageUnitid, camera, renderer)
     specilLayerColor(storageUnit, scene)
 
 }
@@ -464,6 +464,7 @@ function addSpecificWare(shelfId, inLayerNum, inColumnNum, name, scene){
  * @description 将指定的货物的当前层数展示成红色
  * @param {object} unit  货物的具体位置信息
  * @param {object} scene three.js的场景 
+ * @returns {}
  */
 
 function specilLayerColor( unit, scene){
@@ -472,5 +473,31 @@ function specilLayerColor( unit, scene){
     var obj = new THREE.Mesh( layPlane, layRack )
     obj.material.color = new THREE.Color('red')
     obj.position.set(unit.positionX, unit.positionY, 50)
+
+    // 在指定货物的正上方创建一个气球
+    var layCydistanceY = 80 + (unit.inLayerNum - 1) * 15;
+    var layCySelfY = 100 - (unit.inLayerNum - 1) * 29;
+    var layCicle = new THREE.SphereGeometry(5, 10, 10)
+    var layCylinder = new THREE.CylinderGeometry(0.2, 0.2, layCySelfY, 10, 100)
+
+    createCircleObj(unit, scene, layCicle)
+    createCircleObj(unit, scene, layCylinder, layCydistanceY)
     scene.add(obj)
+}
+/**
+ * 
+ * @param {object} unit 货物的位置信息 
+ * @param {object} scene three.js的场景 
+ * @param {object} obj  不同的geometry图形 
+ * @param {number} positionY 图形的y轴位置数据
+ */
+function createCircleObj (unit, scene, obj, positionY){
+    positionY = positionY || 135
+    var layMaterial = new THREE.MeshLambertMaterial({
+        color: 'black',
+        wrieframe:true
+    })
+    var cicleObj = new THREE.Mesh(obj, layMaterial)
+    cicleObj.position.set(unit.positionX, positionY, unit.positionZ)
+    scene.add(cicleObj)
 }

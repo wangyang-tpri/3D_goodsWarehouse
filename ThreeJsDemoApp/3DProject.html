@@ -48,7 +48,7 @@
 </head>
 
 <body>
-  <!-- <div id="label"></div> -->
+  <div id="label"></div>
   <div id="container"></div>
   <script>
 
@@ -368,7 +368,7 @@
         }
       }
       var paramsResult = getUrlParams(location.search);
-      paramsResult && addSpecificWare(paramsResult.shelfName, paramsResult.layerNum, paramsResult.columnNum, paramsResult.cargoName, scene )
+      paramsResult && addSpecificWare(paramsResult.shelfName, paramsResult.layerNum, paramsResult.columnNum, paramsResult.cargoName, scene, camera, renderer )
       //添加选中时的蒙版
       composer = new THREE.ThreeJs_Composer(renderer, scene, camera, options);
 
@@ -377,7 +377,7 @@
       var objects = [];
       for (var i = 0; i < scene.children.length; i++) {
         var Msg = scene.children[i].name.split("_");
-        if (scene.children[i].isMesh && Msg[0] == "货物") {
+        if ( (scene.children[i].isMesh && Msg[0] == "货物") || ( scene.children[i].isMesh && Msg[0] == paramsResult.cargoName)) {
           objects.push(scene.children[i]);
         }
       }
