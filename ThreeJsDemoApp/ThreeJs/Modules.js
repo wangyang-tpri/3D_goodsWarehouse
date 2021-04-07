@@ -404,6 +404,13 @@ function addCargo2(x, y, z, box_x, box_y, box_z, scene, name, camera, renderer) 
     obj2.setColor = function(r, g) {
         obj2.material.color = new THREE.Color().setRGB(255, r, g )
     }
+    gradualChangeColor(obj2, scene, name)
+    obj2.position.set(x,y,z);
+    scene.add(obj2);
+    !isMobile && dragEle([obj2], camera, renderer.domElement)  
+}
+
+function gradualChangeColor (obj2, scene, name) {
     var r = 0, g = 0.1;
     obj2.setColor(r, g)
     setInterval(function(){
@@ -413,17 +420,13 @@ function addCargo2(x, y, z, box_x, box_y, box_z, scene, name, camera, renderer) 
         g = g > 2 ? 0.1 : g;
         obj2.setColor(r, g )
     }, 500)
-    obj2.position.set(x,y,z);
     for ( var i = 0; i < scene.children.length; i++) {
         var msg = scene.children[i].name.split('_');
         var msg2 = name.split('_');
         if (msg[1] == msg2[1] && msg[2] == msg2[2] && msg[3] == msg2[3]){
             scene.children[i].name = name;
-        }
-        
+        }    
     }
-    scene.add(obj2);
-    !isMobile && dragEle([obj2], camera, renderer.domElement)  
 }
 /**
  *  添加单个货位上的货物 
