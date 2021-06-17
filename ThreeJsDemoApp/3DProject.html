@@ -363,7 +363,7 @@
       for (var i = 1; i <= GET_LAYER_NUM(); i++) {
         for (var j = 1; j <= GET_COLUMN_NUM(); j++) {
           for (var k = 1; k <= shelf_list.length; k++) {
-            addOneUnitCargos(shelf_list[k - 1].shelfId, i, j, scene);
+            addOneUnitCargos(shelf_list[k - 1].shelfId, i, j, scene, shelf_list);
           }
         }
       }

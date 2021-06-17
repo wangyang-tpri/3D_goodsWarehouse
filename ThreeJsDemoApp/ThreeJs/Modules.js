@@ -434,9 +434,10 @@ function gradualChangeColor (obj2, scene, name) {
  * @param { number } inLayerNum 货架的层数
  * @param { number } inColumnNum 货架每层的列数
  * @param { object } scene  three.js的场景
+ * @param { number } shelfList 货架的列数
  * 
 */
-function addOneUnitCargos(shelfId,inLayerNum,inColumnNum,scene) {
+function addOneUnitCargos(shelfId,inLayerNum,inColumnNum,scene, shelfList) {
     var storageUnit = getStorageUnitById(shelfId,inLayerNum,inColumnNum);
     var shelf = getShelfById(storageUnit.shelfId);
     var storageUnitid = storageUnit.storageUnitId;
@@ -444,6 +445,12 @@ function addOneUnitCargos(shelfId,inLayerNum,inColumnNum,scene) {
     var y = storageUnit.positionY + GET_BOX_SIZE()/2 + shelf.planeHeight/2;
     var z = storageUnit.positionZ;
     addCargo(x,y,z,GET_BOX_SIZE(),GET_BOX_SIZE(),GET_BOX_SIZE(),scene,"货物"+"_"+storageUnitid)
+    for (var i = 0; i < shelfList.length; i++){
+        var x = -60, y = 100, backZ = -50, frontZ = 150;
+        x += (i * 50); 
+        showColumnNumFront(scene, x, y, frontZ, Number(i + 1))
+        showColumnNumBack(scene, x, y, backZ, Number(i + 1))
+    }
 }
 
 /**
@@ -497,10 +504,35 @@ function specilLayerColor( unit, scene){
 function createCircleObj (unit, scene, obj, positionY){
     positionY = positionY || 135
     var layMaterial = new THREE.MeshLambertMaterial({
-        color: 'black',
+        color: 'blue',
         wrieframe:true
     })
     var cicleObj = new THREE.Mesh(obj, layMaterial)
     cicleObj.position.set(unit.positionX, positionY, unit.positionZ)
     scene.add(cicleObj)
+}
+function createSignBoard( imageNum ){
+    var colGeometry = new THREE.BoxGeometry(30, 20, 2);
+    var colMaterial;
+    colMaterial = new THREE.MeshBasicMaterial();
+    new THREE.TextureLoader().load('./ThreeJs/images/col' + imageNum +'.png', function(map){
+        colMaterial.map = map;
+        colMaterial.needsUpdate = true;
+    })
+    var colObj = new THREE.Mesh(colGeometry, colMaterial)
+    return colObj
+}
+/**
+ * 在每个货架的侧边显示货架的具体列数
+ */
+function showColumnNumFront(scene, x, y, z, imageNum){
+    var signBoardObj = createSignBoard(imageNum);
+    signBoardObj.position.set(x, y, z);
+    scene.add(signBoardObj)
+}
+
+function showColumnNumBack(scene, x, y, z, imageNum) {
+    var signBoardObj = createSignBoard(imageNum);
+    signBoardObj.position.set(x, y, z);
+    scene.add(signBoardObj)
 }
